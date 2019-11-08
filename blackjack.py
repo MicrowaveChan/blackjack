@@ -64,9 +64,9 @@ while not winner:
     if(checkHand(player, dealer) == 100):
         winner = True
 
-    print('Player\'s turn')
     while not winner:
         try:
+            print('Player\'s turn')
             print('Hit or Stand?')
             choice = input('> ')
             # will catch invalid inputs
@@ -78,7 +78,7 @@ while not winner:
                 showHands(player, dealer, hidden)
                 if checkHand(player, dealer) >= 99:
                     winner = True
-
+            # player stands
             else:
                 print('Dealer\'s turn')
                 showHands(player, dealer, hidden)
@@ -88,7 +88,11 @@ while not winner:
                     print('Dealer hits.')
                     hit(dealer)
                     showHands(player, dealer, hidden)
-
+                if checkHand(dealer, player) >= 99:
+                    winner = True
+                else:
+                    # TODO: compare hands
+                    pass
         except ValueError:
             print('Invalid input.')
 
