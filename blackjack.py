@@ -62,18 +62,16 @@ deck = Deck(numDecks)
 player = Player('Player')
 dealer = Player('Dealer')
 
-print('Dealing cards...')
 done = False
 # game loop
 while not done:
     winner = False
-    deck.dealCard(player, 2)
-    deck.dealCard(dealer, 2)
-    showHands(player, dealer, True)
-    if(checkHand(player, dealer) == 100):
-        winner = True
-
     while not winner:
+        deck.dealCard(player, 2)
+        deck.dealCard(dealer, 2)
+        showHands(player, dealer, True)
+        if(checkHand(player, dealer) == 100):
+            winner = True
         try:
             print('Player\'s turn')
             print('Hit or Stand?')
@@ -115,4 +113,9 @@ while not done:
                         print('Dealer Wins!')
         except ValueError:
             print('Invalid input.')
-    done = True
+    choice = input('Play again?')
+    if choice == 'n':
+        done = True
+    else:
+        player.hand.clear()
+        dealer.hand.clear()
