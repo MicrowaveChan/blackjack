@@ -1,3 +1,4 @@
+import os
 from Player import Player
 from Deck import Deck
 
@@ -7,23 +8,34 @@ validHits = ['Hit','H','h','hit','HIT']
 validStands = ['Stand','S','s','stand','STAND']
 valueTen = ['J','Q','K']
 
-def showHands(player, dealer, hidden):
-    if hidden == True:
+def clearScreen():
+    if os.name == 'nt':
+        _ = os.system('cls')
+    else:
+        _ = os.system('clear')
+
+def showHands(player, dealer, hidden = False):
+    clearScreen()
+    print('---------------------')
+    print('| B L A C K J A C K |')
+    print('---------------------')
+    print()
+    if hidden:
         dealer.showDealerHand()
     else:
         print('Dealer ',dealer)
     print('Player ', player)
+    print()
 
-def hit(self):
-    deck.dealCard(self, 1)
+def hit(player):
+    deck.dealCard(player, 1)
 
 # 99 for bust
-# 0 for ok
 # 100 for 21
-def checkHand(self, other):
+def checkHand(player, other, printWinner = True):
     hasAce = False
     total = 0
-    for i in self.hand:
+    for i in player.hand:
         if i in valueTen:
             total += 10
         elif i == 'A':
@@ -35,32 +47,29 @@ def checkHand(self, other):
             total += int(i)
     if hasAce and total > 21:
         total -= 10
+
     if total == 21:
-        print('BlackJack! {} Wins!'.format(self.name))
+        if printWinner: print('BlackJack! {} Wins!'.format(player.name))
         return 100
     elif total > 21:
-        print('Bust! {} Wins!'.format(other.name))
+        if printWinner: print('Bust! {} Wins!'.format(other.name))
         return 99
     else: return total
 
 # start of game
 deck = Deck(numDecks)
 
-print('---------------------')
-print('| B L A C K J A C K |')
-print('---------------------')
 player = Player('Player')
 dealer = Player('Dealer')
 
 print('Dealing cards...')
-
+done = False
 # game loop
-winner = False
-hidden = True
-while not winner:
+while not done:
+    winner = False
     deck.dealCard(player, 2)
     deck.dealCard(dealer, 2)
-    showHands(player, dealer, hidden)
+    showHands(player, dealer, True)
     if(checkHand(player, dealer) == 100):
         winner = True
 
@@ -75,25 +84,35 @@ while not winner:
 
             elif choice in validHits:
                 hit(player)
-                showHands(player, dealer, hidden)
+                showHands(player, dealer, True)
                 if checkHand(player, dealer) >= 99:
                     winner = True
             # player stands
             else:
                 print('Dealer\'s turn')
-                showHands(player, dealer, hidden)
-                hidden = False
-                showHands(player, dealer, hidden)
-                while checkHand(dealer, player) <= 17:
+                showHands(player, dealer, True)
+                # at this point, dealer cards are shown
+                showHands(player, dealer)
+                while checkHand(dealer, player, False) < 17:
                     print('Dealer hits.')
                     hit(dealer)
-                    showHands(player, dealer, hidden)
+                    showHands(player, dealer)
+
                 if checkHand(dealer, player) >= 99:
                     winner = True
                 else:
-                    # TODO: compare hands
-                    pass
+                    if(checkHand(player, dealer, False) > checkHand(dealer, player, False)):
+                        print('Dealer stands.')
+                        winner = True
+                        print('Player Wins!')
+                    elif(checkHand(player, dealer, False) == checkHand(dealer, player, False)):
+                        print('Dealer push.')
+                        player.hand.clear()
+                        dealer.hand.clear()
+                    else:
+                        print('Dealer stands.')
+                        winner = True
+                        print('Dealer Wins!')
         except ValueError:
             print('Invalid input.')
-
-    winner = True
+    done = True
