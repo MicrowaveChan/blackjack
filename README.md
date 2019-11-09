@@ -13,3 +13,5 @@ python3 blackjack.py
 ## To be implemented
 * double
 * split
+* gameplay speed (slowdown)
+
