@@ -10,12 +10,13 @@ valueTen = ['J','Q','K']
 
 def clearScreen():
     if os.name == 'nt':
+        # on windows
         _ = os.system('cls')
     else:
         _ = os.system('clear')
 
 def showHands(player, dealer, hidden = False):
-    clearScreen()
+    # clearScreen()
     print('---------------------')
     print('| B L A C K J A C K |')
     print('---------------------')
@@ -66,12 +67,13 @@ done = False
 # game loop
 while not done:
     winner = False
+    deck.dealCard(player, 2)
+    deck.dealCard(dealer, 2)
     while not winner:
-        deck.dealCard(player, 2)
-        deck.dealCard(dealer, 2)
         showHands(player, dealer, True)
         if(checkHand(player, dealer) == 100):
             winner = True
+            break
         try:
             print('Player\'s turn')
             print('Hit or Stand?')
@@ -87,8 +89,8 @@ while not done:
                     winner = True
             # player stands
             else:
-                print('Dealer\'s turn')
                 showHands(player, dealer, True)
+                print('Dealer\'s turn')
                 # at this point, dealer cards are shown
                 showHands(player, dealer)
                 while checkHand(dealer, player, False) < 17:
@@ -105,16 +107,16 @@ while not done:
                         print('Player Wins!')
                     elif(checkHand(player, dealer, False) == checkHand(dealer, player, False)):
                         print('Dealer push.')
-                        player.hand.clear()
-                        dealer.hand.clear()
+                        break
                     else:
                         print('Dealer stands.')
                         winner = True
                         print('Dealer Wins!')
         except ValueError:
             print('Invalid input.')
-    choice = input('Play again?')
-    if choice == 'n':
+    print('Play again?')
+    choice = input('> ')
+    if choice.lower() == 'n' or choice.lower() == 'no':
         done = True
     else:
         player.hand.clear()
