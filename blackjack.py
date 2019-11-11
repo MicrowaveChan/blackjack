@@ -4,8 +4,9 @@ from Deck import Deck
 
 # Settings
 numDecks = 4
-validHits = ['Hit','H','h','hit','HIT']
-validStands = ['Stand','S','s','stand','STAND']
+validHits = ['h', 'hit']
+validStands = ['s','stand']
+validDouble = ['d', 'double', 'dd']
 valueTen = ['J','Q','K']
 
 def clearScreen():
@@ -76,17 +77,49 @@ while not done:
             break
         try:
             print('Player\'s turn')
-            print('Hit or Stand?')
+            print('Hit, Stand or Double Down?')
             choice = input('> ')
             # will catch invalid inputs
-            if choice not in validHits and choice not in validStands:
+            if choice.lower() not in validHits and choice.lower() not in validStands and choice.lower() not in validDouble:
                 raise ValueError
 
-            elif choice in validHits:
+            elif choice.lower() in validHits:
                 hit(player)
                 showHands(player, dealer, True)
                 if checkHand(player, dealer) >= 99:
                     winner = True
+            # player double downs
+            elif choice.lower() in validDouble:
+                # TODO: double bet
+                hit(player)
+                showHands(player, dealer, True)
+                if checkHand(player, dealer) >= 99:
+                    winner = True
+                else:
+                    showHands(player, dealer, True)
+                    print('Dealer\'s turn')
+                    # at this point, dealer cards are shown
+                    showHands(player, dealer)
+                    while checkHand(dealer, player, False) < 17:
+                        print('Dealer hits.')
+                        hit(dealer)
+                        showHands(player, dealer)
+
+                    if checkHand(dealer, player) >= 99:
+                        winner = True
+                    else:
+                        if(checkHand(player, dealer, False) > checkHand(dealer, player, False)):
+                            print('Dealer stands.')
+                            winner = True
+                            print('Player Wins!')
+                        elif(checkHand(player, dealer, False) == checkHand(dealer, player, False)):
+                            print('Dealer push.')
+                            break
+                        else:
+                            print('Dealer stands.')
+                            winner = True
+                            print('Dealer Wins!')
+
             # player stands
             else:
                 showHands(player, dealer, True)
