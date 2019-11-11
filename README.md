@@ -14,4 +14,5 @@ python3 blackjack.py
 * double
 * split
 * gameplay speed (slowdown)
-
+* betting
+* stats
