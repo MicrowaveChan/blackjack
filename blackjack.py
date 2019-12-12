@@ -1,9 +1,10 @@
-import os
+import os, time
 from Player import Player
 from Deck import Deck
 
 # Settings
 numDecks = 4
+wait_time = 1.5
 validHits = ['h', 'hit']
 validStands = ['s','stand']
 validDouble = ['d', 'double', 'dd']
@@ -17,7 +18,7 @@ def clearScreen():
         _ = os.system('clear')
 
 def showHands(player, dealer, hidden = False):
-    # clearScreen()
+    clearScreen()
     print('---------------------')
     print('| B L A C K J A C K |')
     print('---------------------')
@@ -28,6 +29,7 @@ def showHands(player, dealer, hidden = False):
         print('Dealer ',dealer)
     print('Player ', player)
     print()
+
 
 def hit(player):
     deck.dealCard(player, 1)
@@ -100,8 +102,11 @@ while not done:
                     print('Dealer\'s turn')
                     # at this point, dealer cards are shown
                     showHands(player, dealer)
+                    print('Dealer card revealed.')
+                    time.sleep(wait_time)
                     while checkHand(dealer, player, False) < 17:
                         print('Dealer hits.')
+                        time.sleep(wait_time)
                         hit(dealer)
                         showHands(player, dealer)
 
@@ -110,6 +115,7 @@ while not done:
                     else:
                         if(checkHand(player, dealer, False) > checkHand(dealer, player, False)):
                             print('Dealer stands.')
+                            time.sleep(wait_time)
                             winner = True
                             print('Player Wins!')
                         elif(checkHand(player, dealer, False) == checkHand(dealer, player, False)):
@@ -117,6 +123,7 @@ while not done:
                             break
                         else:
                             print('Dealer stands.')
+                            time.sleep(wait_time)
                             winner = True
                             print('Dealer Wins!')
 
@@ -124,10 +131,14 @@ while not done:
             else:
                 showHands(player, dealer, True)
                 print('Dealer\'s turn')
+                time.sleep(wait_time)
                 # at this point, dealer cards are shown
                 showHands(player, dealer)
+                print('Dealer card revealed.')
+                time.sleep(wait_time)
                 while checkHand(dealer, player, False) < 17:
                     print('Dealer hits.')
+                    time.sleep(wait_time)
                     hit(dealer)
                     showHands(player, dealer)
 
@@ -136,6 +147,7 @@ while not done:
                 else:
                     if(checkHand(player, dealer, False) > checkHand(dealer, player, False)):
                         print('Dealer stands.')
+                        time.sleep(wait_time)
                         winner = True
                         print('Player Wins!')
                     elif(checkHand(player, dealer, False) == checkHand(dealer, player, False)):
@@ -143,6 +155,7 @@ while not done:
                         break
                     else:
                         print('Dealer stands.')
+                        time.sleep(wait_time)
                         winner = True
                         print('Dealer Wins!')
         except ValueError:
