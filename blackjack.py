@@ -6,7 +6,8 @@ from Deck import Deck
 numDecks = 4
 wait_time = 1.5
 validHits = ['h', 'hit']
-validStands = ['s','stand']
+validStands = ['s','stand', 'st']
+validSplits = ['split','sp']
 validDouble = ['d', 'double', 'dd']
 valueTen = ['J','Q','K']
 
@@ -33,6 +34,11 @@ def showHands(player, dealer, hidden = False):
 
 def hit(player):
     deck.dealCard(player, 1)
+
+# for second hand
+def hit_second(player):
+    deck.dealCard(player, 1, True)
+
 
 # 99 for bust
 # 100 for 21
@@ -78,13 +84,21 @@ while not done:
             winner = True
             break
         try:
+            canSplit = False
             print('Player\'s turn')
-            print('Hit, Stand or Double Down?')
+            #TODO: Check for split
+            if(checkSplit(player):
+                print('Hit, Stand, Double Down or split?')
+                canSplit = True
+            else:
+                print('Hit, Stand or Double Down?')
+
             choice = input('> ')
             # will catch invalid inputs
             if choice.lower() not in validHits and choice.lower() not in validStands and choice.lower() not in validDouble:
                 raise ValueError
-
+            
+            # player hits
             elif choice.lower() in validHits:
                 hit(player)
                 showHands(player, dealer, True)
@@ -126,7 +140,9 @@ while not done:
                             time.sleep(wait_time)
                             winner = True
                             print('Dealer Wins!')
-
+            # player splits
+            elif canSplit and choice.lower() in validSplits:
+                #TODO: split
             # player stands
             else:
                 showHands(player, dealer, True)

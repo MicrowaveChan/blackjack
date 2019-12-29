@@ -13,6 +13,9 @@ class Deck:
     def __str__(self):
         return  str(self.deck)
 
-    def dealCard(self, Player, amount):
+    def dealCard(self, Player, amount, second = False):
         for i in range(amount):
-            Player.hand.append(self.deck.pop())
+            if second:
+                Player.second_hand.append(self.deck.pop())
+            else:
+                Player.hand.append(self.deck.pop())
