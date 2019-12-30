@@ -42,10 +42,15 @@ def hit_second(player):
 
 # 99 for bust
 # 100 for 21
-def checkHand(player, other, printWinner = True):
+def checkHand(player, other, printWinner = True, second = False):
+    if second:
+        hand = player.second_hand
+    else:
+        hand = player.hand
+
     hasAce = False
     total = 0
-    for i in player.hand:
+    for i in hand:
         if i in valueTen:
             total += 10
         elif i == 'A':
@@ -65,6 +70,11 @@ def checkHand(player, other, printWinner = True):
         if printWinner: print('Bust! {} Wins!'.format(other.name))
         return 99
     else: return total
+
+def checkSplit(player):
+    print(player.hand[0] == player.hand[1])
+    return player.hand[0] == player.hand[1]
+
 
 # start of game
 deck = Deck(numDecks)
@@ -87,7 +97,7 @@ while not done:
             canSplit = False
             print('Player\'s turn')
             #TODO: Check for split
-            if(checkSplit(player):
+            if(checkSplit(player)):
                 print('Hit, Stand, Double Down or split?')
                 canSplit = True
             else:
@@ -143,6 +153,8 @@ while not done:
             # player splits
             elif canSplit and choice.lower() in validSplits:
                 #TODO: split
+                canSplit = False
+                pass
             # player stands
             else:
                 showHands(player, dealer, True)
@@ -176,6 +188,7 @@ while not done:
                         print('Dealer Wins!')
         except ValueError:
             print('Invalid input.')
+            time.sleep(wait_time)
     print('Play again?')
     choice = input('> ')
     if choice.lower() == 'n' or choice.lower() == 'no':
