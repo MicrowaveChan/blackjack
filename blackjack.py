@@ -4,12 +4,13 @@ from Deck import Deck
 
 # Settings
 numDecks = 4
-wait_time = 1.5
+wait_time = 1.
 validHits = ['h', 'hit']
 validStands = ['s','stand', 'st']
 validSplits = ['split','sp']
 validDouble = ['d', 'double', 'dd']
 valueTen = ['J','Q','K']
+
 
 def clearScreen():
     if os.name == 'nt':
@@ -17,6 +18,7 @@ def clearScreen():
         _ = os.system('cls')
     else:
         _ = os.system('clear')
+
 
 def showHands(player, dealer, hidden = False):
     clearScreen()
@@ -35,10 +37,15 @@ def showHands(player, dealer, hidden = False):
 def hit(player):
     deck.dealCard(player, 1)
 
+
 # for second hand
 def hit_second(player):
     deck.dealCard(player, 1, True)
 
+
+def split(player):
+    player.second_hand.append(player.hand.pop())
+    
 
 # 99 for bust
 # 100 for 21
@@ -72,7 +79,8 @@ def checkHand(player, other, printWinner = True, second = False):
     else: return total
 
 def checkSplit(player):
-    print(player.hand[0] == player.hand[1])
+    if len(player.hand) <= 1 or player.second_hand:
+        return False
     return player.hand[0] == player.hand[1]
 
 
@@ -94,18 +102,16 @@ while not done:
             winner = True
             break
         try:
-            canSplit = False
             print('Player\'s turn')
             #TODO: Check for split
             if(checkSplit(player)):
                 print('Hit, Stand, Double Down or split?')
-                canSplit = True
             else:
                 print('Hit, Stand or Double Down?')
 
             choice = input('> ')
             # will catch invalid inputs
-            if choice.lower() not in validHits and choice.lower() not in validStands and choice.lower() not in validDouble:
+            if choice.lower() not in validHits and choice.lower() not in validStands and choice.lower() not in validDouble and choice.lower() not in validSplits:
                 raise ValueError
             
             # player hits
@@ -151,10 +157,10 @@ while not done:
                             winner = True
                             print('Dealer Wins!')
             # player splits
-            elif canSplit and choice.lower() in validSplits:
+            elif checkSplit(player) and choice.lower() in validSplits:
                 #TODO: split
-                canSplit = False
-                pass
+                split(player)
+                hasSplit = True
             # player stands
             else:
                 showHands(player, dealer, True)
@@ -196,3 +202,4 @@ while not done:
     else:
         player.hand.clear()
         dealer.hand.clear()
+        hasSplit = False
