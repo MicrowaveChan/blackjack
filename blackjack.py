@@ -77,10 +77,10 @@ def main():
                         # at this point, dealer cards are shown
                         showHands(p1, dealer)
                         print('Dealer card revealed.')
-                        time.sleep(config.wait_time)
+                        time.sleep(config.waitTime)
                         while dealer.checkHand(p1, False) < 17:
                             print('Dealer hits.')
-                            time.sleep(config.wait_time)
+                            time.sleep(config.waitTime)
                             dealer.hit(decks)
                             showHands(p1, dealer)
 
@@ -89,7 +89,7 @@ def main():
                         else:
                             if(p1.checkHand(dealer, False) > dealer.checkHand(p1, False)):
                                 print('Dealer stands.')
-                                time.sleep(config.wait_time)
+                                time.sleep(config.waitTime)
                                 winner = True
                                 print('Player Wins!')
                             elif(p1.checkHand(dealer, False) == dealer.checkHand(p1, False)):
@@ -97,7 +97,7 @@ def main():
                                 break
                             else:
                                 print('Dealer stands.')
-                                time.sleep(config.wait_time)
+                                time.sleep(config.waitTime)
                                 winner = True
                                 print('Dealer Wins!')
                 # player splits
@@ -109,14 +109,14 @@ def main():
                 else:
                     showHands(p1, dealer, True)
                     print('Dealer\'s turn')
-                    time.sleep(config.wait_time)
+                    time.sleep(config.waitTime)
                     # at this point, dealer cards are shown
                     showHands(p1, dealer)
                     print('Dealer card revealed.')
-                    time.sleep(config.wait_time)
+                    time.sleep(config.waitTime)
                     while dealer.checkHand(p1, False) < 17:
                         print('Dealer hits.')
-                        time.sleep(config.wait_time)
+                        time.sleep(config.waitTime)
                         dealer.hit(decks)
                         showHands(p1, dealer)
 
@@ -125,7 +125,7 @@ def main():
                     else:
                         if(p1.checkHand(dealer, False) > dealer.checkHand(p1, False)):
                             print('Dealer stands.')
-                            time.sleep(config.wait_time)
+                            time.sleep(config.waitTime)
                             winner = True
                             print('Player Wins!')
                         elif(p1.checkHand(dealer, False) == dealer.checkHand(p1, False)):
@@ -133,12 +133,12 @@ def main():
                             break
                         else:
                             print('Dealer stands.')
-                            time.sleep(config.wait_time)
+                            time.sleep(config.waitTime)
                             winner = True
                             print('Dealer Wins!')
             except ValueError:
                 print('Invalid input.')
-                time.sleep(config.wait_time)
+                time.sleep(config.waitTime)
         print('Play again?')
         choice = input('> ')
         if choice.lower() == 'n' or choice.lower() == 'no':
