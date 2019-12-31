@@ -11,8 +11,7 @@ python3 blackjack.py
 ```
 
 ## To be implemented
-* double
-* split
-* gameplay speed (slowdown)
+* finish split
 * betting
 * stats
+* restructure into modules
